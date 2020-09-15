@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BooksTableSeeder extends Seeder
 {
@@ -11,7 +12,7 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('books')->insert([
+        DB::table('books')->insert([[
                 'title' => 'C++ High Performance',
                 'slug' => 'c++-high-performance',
                 'description' => 'Write code that scales across CPU
@@ -54,7 +55,8 @@ class BooksTableSeeder extends Seeder
                 'cover' => 'python-programming-blueprints.png',
                 'price' => 75000,
                 'weight' => 0.5,
-                'status' => 'PUBLISH',
-            ]);
+                 'status' => 'PUBLISH',
+            ]
+        ]);
     }
 }

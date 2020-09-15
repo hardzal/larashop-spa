@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -12,7 +15,7 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         $categories= [];
-        $faker = Faker\Factory::create();
+        $faker = Faker\Factory::create('id-ID');
 
         $image_categories = ['abstract', 'animals', 'business', 'cats', 'city', 'food', 'nature', 'technics', 'transport'];
 
@@ -21,13 +24,17 @@ class CategoriesTableSeeder extends Seeder
             $name = str_replace('.', '', $name);
             $slug = str_replace(' ', '-', strtolower($name));
             $category = $image_categories[mt_rand(0, 8)];
-            $image_path = '/images/categories/';
-            $image_fullpath = $faker->image($image_path, 500, 300, $category, true, true, $category);
-            $image = str_replace($image_path, '/', '', $image_fullpath);
+
+            $image_path = 'public\images\categories';
+            $image_fullpath = $faker->unique()->image($image_path, 500, 300, $category, true, true, $category);
+            $image = (explode('\\', $image_fullpath));
+
+            // $image = $faker->imageUrl(300, 300, $category);
+
             $categories[$i] = [
                 'name' => $name,
                 'slug' => $slug,
-                'image' => $image,
+                'image' => end($image),
                 'status' => 'PUBLISH',
                 'created_at' => Carbon\Carbon::now()
             ];
