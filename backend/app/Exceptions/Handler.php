@@ -2,7 +2,13 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +56,66 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        // return parent::render($request, $exception);
+        $debug = config('app.debug');
+        $message = '';
+        $status_code = 500;
+
+        if($exception instanceof ModelNotFoundException) {
+            $message = 'Resource is not found';
+            $status_code = 404;
+        } else if ($exception instanceof NotFoundHttpException) {
+            $message = 'Endpoint is not found';
+            $status_code = 404;
+        } else if($exception instanceof MethodNotAllowedHttpException) {
+            $message = 'Method is not allowed';
+            $status_code = 405;
+        } else if($exception instanceof ValidationException) {
+            $validationErrors = $exception->validator->errors()->getMessages();
+            $validationErrors = array_map(function($error) {
+                return array_map(function($message) {
+                    return $message;
+                }, $error);
+            }, $validationErrors);
+            $message = $validationErrors;
+            $status_code = 405;
+        } else if($exception instanceof QueryException) {
+            if($debug) {
+                $message = $exception->getMessage();
+            } else {
+                $message = 'Query failed to execute';
+            }
+
+            $status_code = 500;
+        }
+
+        $rendered = parent::render($request, $exception);
+        $status_code = $rendered->getStatusCode();
+
+        if(empty($message)) {
+            $message = $exception->getMessage();
+        }
+
+        $errors = [];
+        if($debug) {
+            $errors['exception'] = get_class($exception);
+            $errors['trace'] = explode("\n", $exception->getTraceAsString());
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => $message,
+            'data' => null,
+            'errors' => $errors
+        ], $status_code);
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'unautenticate',
+            'data' => null,
+        ], 401);
     }
 }
