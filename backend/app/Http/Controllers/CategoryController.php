@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Http\Resources\Categories as CategoryResourceCollection;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $data = Category::paginate(6);
+        return new CategoryResourceCollection($data);
     }
 
     /**
@@ -59,5 +62,13 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function random($count) {
+        $criteria = Category::select('*')
+            ->inRandomOrder()
+            ->limit($count)
+            ->get();
+        return new CategoryResourceCollection($criteria);
     }
 }

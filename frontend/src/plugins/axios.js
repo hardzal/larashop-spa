@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
 import Vue from 'vue';
-import axios from "axios";
+import axios from 'axios';
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -10,6 +10,7 @@ import axios from "axios";
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
+  baseURL: process.env.VUE_APP_API_URL + '/api/v1',
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
@@ -46,16 +47,16 @@ Plugin.install = function(Vue, options) {
     axios: {
       get() {
         return _axios;
-      }
+      },
     },
     $axios: {
       get() {
         return _axios;
-      }
+      },
     },
   });
 };
 
-Vue.use(Plugin)
+Vue.use(Plugin);
 
 export default Plugin;
