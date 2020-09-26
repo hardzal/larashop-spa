@@ -32,17 +32,7 @@
       </div>
       <v-layout wrap>
         <v-flex v-for="book in books" :key="`book-` + book.id" xs6>
-          <v-card :to="'/book/' + book.slug">
-            <v-img
-              :src="getImage('/books/' + book.cover)"
-              class="white--text img-thumbnail"
-            >
-              <v-card-title
-                class="fill-height align-end"
-                v-text="book.title"
-              ></v-card-title>
-            </v-img>
-          </v-card>
+          <BookItem :book="book" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -54,7 +44,9 @@
 
 export default {
   name: 'Home',
-  components: {},
+  components: {
+    BookItem: () => import('@/components/BookItem.vue'),
+  },
   data: () => ({
     categories: [],
     books: [],

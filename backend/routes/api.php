@@ -22,6 +22,8 @@ Route::prefix('v1')->group(function() {
     Route::get('books', 'BookController@index');
     Route::get('book/{id}', 'BookController@view')->where('id', '[0-9]+');
     Route::get('books/top/{count}', 'BookController@top');
+    Route::get('books/slug/{slug}', 'BookController@slug');
+    Route::get('books/search/{keyword}', 'BookController@search');
 
     Route::post('login', 'AuthController@login');
     Route::post('register', 'AuthController@register');
@@ -31,4 +33,5 @@ Route::prefix('v1')->group(function() {
 
     Route::get('/categories', 'CategoryController@index');
     Route::get('/categories/random/{count}', 'CategoryController@random');
+    Route::get('categories/slug/{slug}', 'CategoryController@slug');
 });

@@ -10,7 +10,7 @@
       <v-btn icon>
         <v-badge color="red" overlap>
           <template v-slot:badge>
-            <span>0</span>
+            <span>{{ countCart }}</span>
           </template>
           <v-icon>
             mdi-cart
@@ -27,6 +27,7 @@
         prepend-inner-icon="mdi-magnify"
         solo-inverted
         class="p-2"
+        @click="dialog = true"
       ></v-text-field>
     </v-app-bar>
     <v-app-bar app color="primary" dark v-else>
@@ -37,7 +38,7 @@
       <v-btn icon to="/about">
         <v-badge color="red" overlap>
           <template v-slot:badge>
-            <span>0</span>
+            <span>{{ countCart }}</span>
           </template>
           <v-icon>mdi-cart</v-icon>
         </v-badge>
@@ -98,6 +99,17 @@
       </v-navigation-drawer>
     </v-card>
 
+    <Alert />
+
+    <v-dialog
+      v-model="dialog"
+      fullscrenn
+      hide-overlay
+      transition="scale-transition"
+    >
+      <Search @closed="closeDialog" />
+    </v-dialog>
+
     <v-main>
       <v-container>
         <v-slide-y-transition>
@@ -118,12 +130,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'App',
 
-  components: {},
+  components: {
+    Alert: () => import('@/components/Alert.vue'),
+    Search: () => import('@/components/Search.vue'),
+  },
 
   data: () => ({
+    dialog: false,
     drawer: false,
     guest: true,
     menus: [
@@ -140,7 +157,15 @@ export default {
     isHome() {
       return this.$route.path == '/';
     },
+
+    ...mapGetters({
+      countCart: 'cart/count',
+    }),
   },
-  methods: {},
+  methods: {
+    closeDialog(value) {
+      this.dialog = value;
+    },
+  },
 };
 </script>

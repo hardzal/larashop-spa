@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        DB::table('users')->insert([[
           'name' => 'John Andi',
           'email' => 'johnandi@gmail.com',
           'password' => bcrypt('12345678'),
@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'roles' => json_encode(['CUSTOMER']),
             'status' => 'INACTIVE'
-        ]);
+        ]]);
     }
 }
 
