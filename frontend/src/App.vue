@@ -27,7 +27,7 @@
         prepend-inner-icon="mdi-magnify"
         solo-inverted
         class="p-2"
-        @click="dialog = true"
+        @click="setDialogComponent('search')"
       ></v-text-field>
     </v-app-bar>
     <v-app-bar app color="primary" dark v-else>
@@ -101,14 +101,25 @@
 
     <Alert />
 
-    <v-dialog
+    <!-- <v-dialog
       v-model="dialog"
       fullscrenn
       hide-overlay
       transition="scale-transition"
     >
       <Search @closed="closeDialog" />
-    </v-dialog>
+    </v-dialog> -->
+
+    <keep-alive>
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <component :is="currentComponent" @close="setDialogStatus"></component>
+      </v-dialog>
+    </keep-alive>
 
     <v-main>
       <v-container>
@@ -140,9 +151,9 @@ export default {
   },
 
   data: () => ({
-    dialog: false,
+    // dialog: false,
+    // guest: true,
     drawer: false,
-    guest: true,
     menus: [
       { title: 'Home', icon: 'mdi-home', route: '/' },
       { title: 'About', icon: 'mdi-account', route: '/about' },
@@ -160,12 +171,30 @@ export default {
 
     ...mapGetters({
       countCart: 'cart/count',
+      guest: 'auth/guest',
+      user: 'auth/user',
+      dialogStatus: 'dialog/status',
+      currentComponent: 'dialog/component',
     }),
+
+    dialog: {
+      get() {
+        return this.dialogStatus;
+      },
+      set(value) {
+        this.setDialogStatus(value);
+      },
+    },
   },
   methods: {
-    closeDialog(value) {
-      this.dialog = value;
-    },
+    ...mapActions({
+      setDialogStatus: 'dialog/setStatus',
+      setDialogComponent: 'dialog/setComponent',
+    }),
+
+    // closeDialog(value) {
+    //   this.dialog = value;
+    // },
   },
 };
 </script>

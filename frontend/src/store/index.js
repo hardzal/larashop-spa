@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 import cart from '@/stores/cart';
 import alert from '@/stores/alert';
+import auth from '@/stores/auth';
+import dialog from '@/stores/auth';
 
 export default new Vuex.Store({
   state: {},
@@ -13,5 +15,7 @@ export default new Vuex.Store({
   modules: {
     cart,
     alert,
+    auth,
+    dialog,
   },
 });
