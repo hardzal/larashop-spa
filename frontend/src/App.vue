@@ -65,7 +65,7 @@
             <v-icon left>mdi-lock</v-icon>
             Login
           </v-btn>
-          <v-btn block color="success">
+          <v-btn block color="success" @click="setDialogComponent('register')">
             <v-icon left>mdi-account</v-icon>
             Register
           </v-btn>
@@ -154,6 +154,7 @@ export default {
     Alert: () => import('@/components/Alert.vue'),
     Search: () => import('@/components/Search.vue'),
     Login: () => import('@/components/Login.vue'),
+    Register: () => import('@/components/Register.vue'),
   },
 
   data: () => ({
