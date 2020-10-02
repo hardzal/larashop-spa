@@ -48,10 +48,10 @@
       <v-navigation-drawer app v-model="drawer">
         <v-list-item v-if="!guest">
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            <v-img :src="getImage('/users/' + user.avatar)"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>John</v-list-item-title>
+            <v-list-item-title>{{ user.name }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -196,7 +196,37 @@ export default {
     ...mapActions({
       setDialogStatus: 'dialog/setStatus',
       setDialogComponent: 'dialog/setComponent',
+      setAuth: 'auth/set',
+      setAlert: 'alert/set',
     }),
+
+    logout() {
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + this.user.api_token,
+        },
+      };
+
+      this.axios
+        .post('/logout', {}, config)
+        .then((response) => {
+          this.setAuth({});
+          this.setAlert({
+            status: true,
+            color: 'success',
+            text: 'Logout successfully',
+          });
+        })
+        .catch((error) => {
+          let { data } = error.response;
+
+          this.setAlert({
+            status: true,
+            color: 'error',
+            text: data.message,
+          });
+        });
+    },
 
     // closeDialog(value) {
     //   this.dialog = value;

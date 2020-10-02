@@ -19,9 +19,9 @@
           required
         ></v-text-field>
         <v-text-field
-          v-modal="password"
+          v-model="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="passworRules"
+          :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
           hint="At least 6 characters"
           @click:append="showPassword = !showPassword"
@@ -47,11 +47,11 @@ export default {
   data() {
     return {
       valid: true,
-      email: 'lou56@example.org',
+      email: 'email@example.org',
       emailRules: [
         (v) => !!v || 'Email is required',
         (v) =>
-          /([a-zA-Z0-9_]{1,})(@)([a-zA-Z0-9_]{2,}).([a-zA-Z0-9]{2,})+/.text(
+          /([a-zA-Z0-9_]{1,})(@)([a-zA-Z0-9_]{2,}).([a-zA-Z0-9]{2,})+/.test(
             v
           ) || 'Email must be valid',
       ],
@@ -75,7 +75,7 @@ export default {
     }),
 
     submit() {
-      if (this.$res.form.validate()) {
+      if (this.$refs.form.validate()) {
         let formData = {
           email: this.email,
           password: this.password,
@@ -93,6 +93,7 @@ export default {
                 color: 'success',
                 text: 'Login success',
               });
+              alert('hell!');
               this.close();
             } else {
               this.setAlert({

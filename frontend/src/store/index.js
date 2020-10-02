@@ -6,7 +6,7 @@ Vue.use(Vuex);
 import cart from '@/stores/cart';
 import alert from '@/stores/alert';
 import auth from '@/stores/auth';
-import dialog from '@/stores/auth';
+import dialog from '@/stores/dialog';
 
 export default new Vuex.Store({
   state: {},
