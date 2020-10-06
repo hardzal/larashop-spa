@@ -53,7 +53,7 @@
             </v-icon>
           </v-btn>
           <v-btn @click="clear">
-            mdi-lock-reset
+            Reset
             <v-icon right dark>mdi-lock-reset</v-icon>
           </v-btn>
         </div>
@@ -84,7 +84,7 @@ export default {
           ) || 'Email must be valid',
       ],
       showPassword: false,
-      password: '123456',
+      password: '',
       passwordRules: [
         (v) => !!v || 'Password is required',
         (v) => (v && v.length >= 6) || 'Password minimal 6 characters',
@@ -110,7 +110,7 @@ export default {
         formData.set('password', this.password);
 
         this.axios
-          .post('/register', FormData)
+          .post('/register', formData)
           .then((response) => {
             let { data } = response.data;
             this.setAuth(data);
