@@ -132,7 +132,7 @@ export default {
       }
     },
     close() {
-      this.$emit('closed', false);
+      this.$emit('close', false);
     },
     clear() {
       this.$refs.form.reset();

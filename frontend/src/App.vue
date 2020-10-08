@@ -7,9 +7,9 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn icon @click="setDialogComponent('cart')">
         <v-badge color="red" overlap>
-          <template v-slot:badge>
+          <template v-slot:badge v-if="countCart > 0">
             <span>{{ countCart }}</span>
           </template>
           <v-icon>
@@ -155,6 +155,7 @@ export default {
     Search: () => import('@/components/Search.vue'),
     Login: () => import('@/components/Login.vue'),
     Register: () => import('@/components/Register.vue'),
+    Cart: () => import('@/components/Cart.vue'),
   },
 
   data: () => ({
