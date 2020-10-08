@@ -34,4 +34,8 @@ Route::prefix('v1')->group(function() {
     Route::get('/categories', 'CategoryController@index');
     Route::get('/categories/random/{count}', 'CategoryController@random');
     Route::get('categories/slug/{slug}', 'CategoryController@slug');
+
+    Route::get('provinces', 'ShopController@provinces');
+    Route::get('cities', 'ShopController@cities');
 });
+

@@ -39,6 +39,12 @@ const routes = [
     name: 'book',
     component: () => import('../views/Book.vue'),
   },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('../views/Checkout.vue'),
+    meta: { auth: true },
+  },
 ];
 
 const router = new VueRouter({
